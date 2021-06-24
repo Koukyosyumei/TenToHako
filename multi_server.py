@@ -5,18 +5,18 @@ import time
 
 from src.tentohako.game import Board
 
-NUM_MAXPLAYER = 2
+NUM_PLAYER = 2
 HOST = "localhost"
 HOST_PORT = 8020
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.bind((HOST, HOST_PORT))
-sock.listen(NUM_MAXPLAYER)
+sock.listen(NUM_PLAYER)
 
 
 board = Board([], 3, 3)
 board.initialize()
-scores = [0]*NUM_MAXPLAYER
+scores = [0]*NUM_PLAYER
 clients = []
 
 
@@ -67,11 +67,14 @@ while True:
 
     # 待受中にアクセスしてきたクライアントを追加
     clients.append((conn, addr))
-    # スレッド作成
-    thread = threading.Thread(
-        target=loop_handler, args=(conn, addr), daemon=True)
-    # スレッドスタート
-    thread.start()
 
-    if board.is_done():
-        break
+    if len(clients) == NUM_PLAYER:
+        print("starts game")
+        # スレッド作成
+        thread = threading.Thread(
+            target=loop_handler, args=(conn, addr), daemon=True)
+        # スレッドスタート
+        thread.start()
+
+        if board.is_done():
+            break
