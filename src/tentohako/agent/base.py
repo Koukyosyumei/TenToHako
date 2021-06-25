@@ -1,11 +1,34 @@
 class BaseAgent:
     def __init__(self, name=""):
+        """Abstract class which represents the agent.
+
+        Args:
+            name: the name of the agent
+
+        Attributes:
+            name: the name of the agent
+        """
         self.name = name
 
     def step(self, board):
+        """Return the action based on the given board.
+
+        Args:
+            board: the instance of Board class which represents
+                   the current board state.
+        """
         pass
 
     def get_valid_action(self, board):
+        """Return a list of possible actions based on the given board.
+
+        Args:
+            board: the instance of Board class which represents
+                   the current board state.
+
+        Returns:
+            valid_actions: a list of possible actions
+        """
         valid_actions = []
         for j in range(board.dim_y):
             for i in range(board.dim_x):
