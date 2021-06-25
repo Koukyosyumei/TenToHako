@@ -6,6 +6,22 @@ from ..game import Board
 
 class Client:
     def __init__(self, agent, host_port):
+        """Class which represents the participant of the game.
+
+        Args:
+            agent: class which defines the agent.
+                   This class should have member function `step`,
+                   which takes the instance of the Board class as an argument.
+            host_port: port number of the host server.
+
+        Attributes:
+            agent: class which defines the agent.
+                   This class should have member function `step`,
+                   which takes the instance of the Board class as an argument.
+            host_port: port number of the host server.
+            sock: socket which connects this client and the host server.
+            uid: the id of the client.
+        """
         self.agent = agent
         self.host_port = host_port
 
@@ -17,12 +33,16 @@ class Client:
         self._receive_uid()
 
     def _receive_uid(self):
+        """Receive the id of the client from the host server
+        """
         # send the id to the server
         msg_uid = self.sock.recv(4096)
         self.uid = json.loads(msg_uid)["uid"]
         print("uid: ", self.uid)
 
     def play(self):
+        """Play the game
+        """
         while True:
             try:
                 # receive the state from the server

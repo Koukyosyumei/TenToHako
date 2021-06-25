@@ -5,6 +5,26 @@ import random
 class Board:
     def __init__(self, board_matrix, ncol, nrow,
                  score_min=1, score_max=9):
+        """Class represents the board of the dots and boxes
+
+        Args:
+            board_matrix: list which represents the current state of the board
+            ncol: number of the columns of the board
+            nrow: number of the row of the board
+            score_min: the minimum score of the cell
+            score_max: the mamimum score of the cell
+
+        Attributes:
+            board_matrix: list which represents the current state of the board
+            ncol: number of the columns of the board
+            nrow: number of the row of the board
+            score_min: the minimum score of the cell
+            score_max: the mamimum score of the cell
+            dim_x: the x element of the dimension of the board_matrix
+                   (equal to ncol*2 + 1)
+            dim_y: the y element of the dimension of the board_matrix
+                   (equal to nrow*2 + 1)
+        """
         self.board_matrix = board_matrix
         self.ncol = ncol
         self.nrow = nrow
@@ -14,6 +34,10 @@ class Board:
         self.dim_y = nrow*2 + 1
 
     def initialize(self):
+        """Initialize the board matrix.
+           Each cell is filled randomly with a number between
+           score_min and score_max.
+        """
         for i in range(self.dim_y):
             r = []
             for j in range(self.dim_x):
@@ -26,6 +50,20 @@ class Board:
             self.board_matrix.append(r)
 
     def next_state(self, j, i):
+        """Make next state and culculate the score based on the given action.
+
+        Args:
+            j: y element of the picked action.
+            i: x element of the picked action.
+
+        Returns:
+            next_board: the instance of Board class
+                        which represents the next state.
+            score: score the agent got with the picked action.
+
+        Raises:
+            ValueError: if the action is not valid
+        """
         score = 0
         next_board = copy.deepcopy(self)
 
@@ -61,6 +99,11 @@ class Board:
         return next_board, score
 
     def is_done(self):
+        """Judge whether the state meets the enc condition.
+
+        Returns:
+            bool: True if the game is over.
+        """
         for j in range(self.dim_y):
             for i in range(self.dim_x):
                 if (i % 2 != j % 2) and (self.board_matrix[j][i] == " "):
@@ -68,6 +111,11 @@ class Board:
         return True
 
     def board_to_string(self):
+        """Convert the board matrix to string to print our.
+
+        Returns:
+            boardstring: the string representataion of the board matrix.
+        """
         boardstring = ""
         if self.dim_x > 9:
             boardstring += " "
