@@ -14,7 +14,7 @@ class Board:
             score_min: the minimum score of the cell
             score_max: the mamimum score of the cell
 
-        Arguments:
+        Attributes:
             board_matrix: list which represents the current state of the board
             ncol: number of the columns of the board
             nrow: number of the row of the board
@@ -57,8 +57,12 @@ class Board:
             i: x element of the picked action.
 
         Returns:
-            next_board: the instance of Board class which represents the next state.
+            next_board: the instance of Board class
+                        which represents the next state.
             score: score the agent got with the picked action.
+
+        Raises:
+            ValueError: if the action is not valid
         """
         score = 0
         next_board = copy.deepcopy(self)
