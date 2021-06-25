@@ -48,7 +48,7 @@ class Server:
                                 "done": self.board.is_done(),
                                 "score": self.id_to_scores,
                                 "next_player": self.next_player}).encode()
-        for idx in self.user_id:
+        for idx in self.user_ids:
             self.id_to_clients[idx].sendall(msg_state)
 
     def _receive_and_apply_picked_actions(self):
@@ -57,16 +57,16 @@ class Server:
         action = json.loads(msg_action)
 
         # generate the new state and culculate the score
-        board, score = self.board.next_state(action["j"], action["i"])
+        self.board, score = self.board.next_state(action["j"], action["i"])
         self.id_to_scores[self.next_player] += score
 
         print(f"uid {self.next_player} get {score} points")
 
     def play(self, steps_limit=1e5):
-
+        self.next_player = 1
         while self.step < steps_limit:
 
-            self.send_current_state()
+            self._send_current_state()
 
             # if the game is over, terminate the program
             if self.board.is_done():
@@ -78,3 +78,6 @@ class Server:
 
             # incriment the step
             self.step += 1
+
+            print(self.board.board_to_string())
+            print("-------------------------------------")
