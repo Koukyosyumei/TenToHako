@@ -1,4 +1,4 @@
-from src.tentohako.socket import Server
+from tentohako.socket import Server
 
 N_COL = 3
 N_ROW = 3

@@ -2,7 +2,7 @@ import json
 import socket
 import time
 
-from src.tentohako.game import Board
+from ..game import Board
 
 
 class Server:

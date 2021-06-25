@@ -1,7 +1,7 @@
 import json
 import socket
 
-from src.tentohako.game import Board
+from ..game import Board
 
 
 class Client:

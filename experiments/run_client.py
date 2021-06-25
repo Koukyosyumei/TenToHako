@@ -1,5 +1,5 @@
-from src.tentohako.agent import RandomAgent
-from src.tentohako.socket import Client
+from tentohako.agent import RandomAgent
+from tentohako.socket import Client
 
 HOST_PORT = 8020
 
