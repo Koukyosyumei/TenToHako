@@ -5,7 +5,7 @@ from .base import BaseAgent
 
 
 class MinMaxAgent(BaseAgent):
-    def __init__(self, name="minmax"):
+    def __init__(self, name="minmax", depth=3):
         """An agents which uses minmax algorithm for search
 
         Args:
@@ -15,22 +15,20 @@ class MinMaxAgent(BaseAgent):
             name: the name of the agent
         """
         super().__init__(name)
-
-    def set_player_id(self, player_id):
-        self.player_id = player_id
+        self.depth = depth
 
     def minmax(self, board, player_id, id_to_scores, depth):
         """Search the best action with minmax algorithm
         """
         if depth == 0 or board.is_done():
-            return id_to_scores[player_id]
+            return id_to_scores["1"] - id_to_scores["-1"]
 
         next_states = []
         valid_actions = self.get_valid_action(board)
         for va in valid_actions:
-            temp_state, temp_score = board.next_states(va[0], va[1])
+            temp_state, temp_score = board.next_state(va[0], va[1])
             temp_id_to_scores = copy.deepcopy(id_to_scores)
-            temp_id_to_scores[player_id] += temp_score
+            temp_id_to_scores[str(player_id)] += temp_score
             next_states.append((temp_state, temp_id_to_scores))
 
         best = -1e5 if player_id == 1 else 10 * board.nrow * board.ncol
@@ -54,9 +52,9 @@ class MinMaxAgent(BaseAgent):
         next_states = []
         valid_actions = self.get_valid_action(board)
         for va in valid_actions:
-            temp_state, temp_score = board.next_states(va[0], va[1])
+            temp_state, temp_score = board.next_state(va[0], va[1])
             temp_id_to_scores = copy.deepcopy(id_to_scores)
-            temp_id_to_scores[self.player_id] += temp_score
+            temp_id_to_scores[str(self.player_id)] += temp_score
             next_states.append((va, temp_state, temp_id_to_scores))
 
         best_score = -1e5 if self.player_id == 1 else 10 *\
@@ -64,7 +62,7 @@ class MinMaxAgent(BaseAgent):
         action_dict = {}
 
         for (va, sta, dic) in next_states:
-            score = self.minmax(sta, self.player_id, self.depth)
+            score = self.minmax(sta, -1*self.player_id, dic, self.depth)
 
             if score not in action_dict:
                 action_dict[score] = [va]
