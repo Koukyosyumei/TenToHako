@@ -10,15 +10,28 @@ class MinMaxAgent(BaseAgent):
 
         Args:
             name: the name of the agent
+            depth: number of recursion
 
         Attributes:
             name: the name of the agent
+            depth: number of recursion
         """
         super().__init__(name)
         self.depth = depth
 
     def minmax(self, board, player_id, id_to_scores, depth):
         """Search the best action with minmax algorithm
+
+        Args:
+            board: the object of Board class which represents
+                   the current status
+            player_id: id of this agent
+            id_to_scores: dictionary whose keies are the user id and the
+                          values are scores
+            depth: number of recursion
+
+        Returns:
+            best: score of the given board
         """
         if depth == 0 or board.is_done():
             return id_to_scores["1"] - id_to_scores["-1"]
@@ -44,6 +57,8 @@ class MinMaxAgent(BaseAgent):
         Args:
             board: the instance of Board class which represents
                    the current board state.
+            id_to_scores: dictionary whose keies are the user id and the
+                          values are scores
 
         Returns:
             picked_action:
@@ -74,6 +89,6 @@ class MinMaxAgent(BaseAgent):
             if self.player_id == -1 and score < best_score:
                 best_score = score
 
-        best_action = random.choice(action_dict[best_score])
+        picked_action = random.choice(action_dict[best_score])
 
-        return best_action
+        return picked_action
