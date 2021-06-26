@@ -39,6 +39,7 @@ class Client:
         msg_uid = self.sock.recv(4096)
         self.uid = json.loads(msg_uid)["uid"]
         print("uid: ", self.uid)
+        self.agent.set_player_id(self.uid)
 
     def play(self):
         """Play the game
@@ -57,7 +58,7 @@ class Client:
 
                 if self.uid == state["next_player"]:
                     # choose the action
-                    action = self.agent.step(board)
+                    action = self.agent.step(board, state["score"])
                     msg_action = json.dumps({"j": action[0],
                                              "i": action[1]}).encode()
                     self.sock.send(msg_action)
