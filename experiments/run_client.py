@@ -3,11 +3,9 @@ import argparse
 from tentohako.agent import MinMaxAgent, RandomAgent
 from tentohako.socket import Client
 
-HOST_PORT = 8020
 
-
-def main(agent):
-    client = Client(agent, HOST_PORT)
+def main(agent, host_port):
+    client = Client(agent, host_port)
     client.play()
 
 
@@ -15,6 +13,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-a", help="the type of your agent",
                         type=str)
+    parser.add_argument("-p", help="host port",
+                        type=int)
     args = parser.parse_args()
 
     if args.a == "r":
@@ -24,4 +24,4 @@ if __name__ == '__main__':
     else:
         agent = RandomAgent()
 
-    main(agent)
+    main(agent, args.p)

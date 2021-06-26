@@ -117,5 +117,3 @@ class Server:
 
             print(self.board.board_to_string())
             print("-------------------------------------")
-
-
