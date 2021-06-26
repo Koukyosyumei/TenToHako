@@ -15,7 +15,7 @@ class RandomAgent(BaseAgent):
         """
         super().__init__(name)
 
-    def step(self, board):
+    def step(self, board, id_to_scores):
         """Randomly return the action based on the given board.
 
         Args:

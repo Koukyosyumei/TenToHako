@@ -9,6 +9,8 @@ def main():
     server = Server(HOST_PORT, N_COL, N_ROW)
     server.set_clients()
     server.play()
+    print("Result")
+    print(server.id_to_scores)
 
 
 if __name__ == '__main__':
