@@ -9,7 +9,7 @@ class Server:
     def __init__(self, port,
                  ncol, nrow, num_player=2,
                  score_min=1, score_max=9,
-                 plot=True):
+                 plot=True, **kwargs):
         """Class which represents the host server of the game.
 
         Args:
@@ -56,7 +56,7 @@ class Server:
 
         self.plot = plot
         if self.plot:
-            self.viewer = Viewer(self.board)
+            self.viewer = Viewer(self.board, **kwargs)
             self.viewer.update(0, 0, 0, 0)
 
     def set_clients(self):

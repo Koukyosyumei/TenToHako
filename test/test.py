@@ -1,5 +1,5 @@
-from src.tentohako.agent import RandomAgent
-from src.tentohako.game import Board
+from tentohako.agent import RandomAgent
+from tentohako.game import Board
 
 if __name__ == '__main__':
     board = Board([], 2, 2)

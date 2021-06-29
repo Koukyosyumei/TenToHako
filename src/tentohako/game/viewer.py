@@ -6,17 +6,19 @@ from PIL import Image
 
 
 class Viewer:
-    def __init__(self, board, height=6, width=6, tmp_dir="tmp"):
+    def __init__(self, board, height=6, width=6, tmp_dir="tmp",
+                 id_to_color={1: "b", -1: "r"}, text_fontsize=36):
         self.fig = plt.figure(figsize=(height, width))
         self.board = board
         self.tmp_dir = tmp_dir
+        self.text_fontsize = text_fontsize
 
         self.dots = sum([[(x, y) for y in range(board.nrow+1)]
                          for x in range(board.ncol+1)], [])
         self.xs = [d[0]*2 for d in self.dots]
         self.ys = [d[1]*2 for d in self.dots]
 
-        self.id_to_color = {1: "b", -1: "r"}
+        self.id_to_color = id_to_color
         self.im_log = []
         os.makedirs(tmp_dir, exist_ok=True)
 
@@ -34,7 +36,8 @@ class Viewer:
             plt.scatter(self.xs, self.ys, c="k")
 
             for k, v in points.items():
-                plt.text(k[0], k[1], v, fontsize=36, ha='center', va='center')
+                plt.text(k[0], k[1], v,
+                         fontsize=self.text_fontsize, ha='center', va='center')
 
         else:
             if action_j % 2 == 0 and action_i % 2 == 1:
