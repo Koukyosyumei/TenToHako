@@ -7,6 +7,7 @@ def main(host_port, ncol, nrow, file_path):
     server = Server(host_port, ncol, nrow)
     server.set_clients()
     server.play()
+    server.save_plot("test.gif")
     print("Result")
     print(server.id_to_scores)
 
