@@ -2,13 +2,14 @@ import json
 import socket
 import time
 
-from ..game import Board
+from ..game import Board, Viewer
 
 
 class Server:
     def __init__(self, port,
                  ncol, nrow, num_player=2,
-                 score_min=1, score_max=9):
+                 score_min=1, score_max=9,
+                 plot=True):
         """Class which represents the host server of the game.
 
         Args:
@@ -53,6 +54,11 @@ class Server:
         self.next_player = None
         self.step = 0
 
+        self.plot = plot
+        if self.plot:
+            self.viewer = Viewer(self.board)
+            self.viewer.update(0, 0, 0, 0)
+
     def set_clients(self):
         """Register clients
         """
@@ -87,6 +93,10 @@ class Server:
         msg_action = self.id_to_clients[self.next_player].recv(4096)
         action = json.loads(msg_action)
 
+        if self.plot:
+            self.viewer.update(self.step, self.next_player,
+                               action["i"], action["j"])
+
         # generate the new state and culculate the score
         self.board, score = self.board.next_state(action["j"], action["i"])
         self.id_to_scores[self.next_player] += score
@@ -102,6 +112,9 @@ class Server:
         self.next_player = 1
         while self.step < steps_limit:
 
+            # incriment the step
+            self.step += 1
+
             self._send_current_state()
 
             # if the game is over, terminate the program
@@ -112,8 +125,8 @@ class Server:
             # switch the player
             self.next_player *= -1
 
-            # incriment the step
-            self.step += 1
-
             print(self.board.board_to_string())
             print("-------------------------------------")
+
+    def save_plot(self, path):
+        self.viewer.save(path)
