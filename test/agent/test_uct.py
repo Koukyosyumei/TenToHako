@@ -1,6 +1,6 @@
-def test_randomagent():
+def test_uctagent():
 
-    from tentohako.agent import RandomAgent
+    from tentohako.agent import UCTAgent
     from tentohako.game import Board
 
     board_matrix = [['*', '-', '*', '-', '*'],
@@ -8,7 +8,7 @@ def test_randomagent():
                     ['*', ' ', '*', ' ', '*'],
                     [' ',  5,  '|',  3,  '|'],
                     ['*', '-', '*', '-', '*']]
-    name = "random"
+    name = "uct"
     player_id = 1
     id_to_scores = {'1': 0, '-1': 0}
 
@@ -16,12 +16,12 @@ def test_randomagent():
     board.initialize()
     board.board_matrix = board_matrix
 
-    randomagent = RandomAgent(name)
-    randomagent.set_player_id(player_id)
-    valid_actions = randomagent.get_valid_action(board)
-    picked_action = randomagent.step(board, id_to_scores)
+    uctagent = UCTAgent(name)
+    uctagent.set_player_id(player_id)
+    valid_actions = uctagent.get_valid_action(board)
+    picked_action = uctagent.step(board, id_to_scores)
 
-    assert randomagent.name == name
-    assert randomagent.player_id == player_id
+    assert uctagent.name == name
+    assert uctagent.player_id == player_id
     assert valid_actions == [(2, 1), (2, 3), (3, 0)]
     assert picked_action in valid_actions
