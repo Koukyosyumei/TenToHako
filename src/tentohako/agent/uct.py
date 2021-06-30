@@ -36,7 +36,7 @@ class UCTNode(Node):
 
 
 class UCTAgent(BaseAgent):
-    def __init__(self, name="uct", maxiterations=100, timelimit=1, cpuct=0.3):
+    def __init__(self, name="uct", maxiterations=1000, timelimit=1, cpuct=0.3):
         super().__init__(name)
         self.maxiterations = maxiterations
         self.timelimit = timelimit
@@ -65,14 +65,14 @@ class UCTAgent(BaseAgent):
                     node = node.selectChild()
                     variantBoard, score = variantBoard.next_state(
                         node.action[0], node.action[1])
-                    variantScore[activePlayer] += score
+                    variantScore[str(activePlayer)] += score
                     activePlayer *= -1
 
                 if (len(node.unexamined) > 0):
                     j = random.randint(0, len(node.unexamined)-1)
                     variantBoard, score = variantBoard.next_state(
                         node.unexamined[j][0], node.unexamined[j][1])
-                    variantScore[activePlayer] += score
+                    variantScore[str(activePlayer)] += score
                     activePlayer *= -1
                     node.addChild(variantBoard, j, variantScore)
 
@@ -81,14 +81,14 @@ class UCTAgent(BaseAgent):
                     j = random.randint(0, len(actions)-1)
                     variantBoard, score = variantBoard.next_state(
                         actions[j][0], actions[j][1])
-                    variantScore[activePlayer] += score
+                    variantScore[str(activePlayer)] += score
                     activePlayer *= -1
                     nodesVisited += 1
                     actions = get_valid_action(variantBoard)
 
-                if variantScore[1] > variantScore[-1]:
+                if variantScore["1"] > variantScore["-1"]:
                     result = {1: 1, -1: 0}
-                elif variantScore[1] < variantScore[-1]:
+                elif variantScore["1"] < variantScore["-1"]:
                     result = {1: 0, -1: 1}
                 else:
                     result = {1: 0.5, -1: 0.5}

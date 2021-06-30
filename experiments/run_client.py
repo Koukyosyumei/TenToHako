@@ -1,6 +1,6 @@
 import argparse
 
-from tentohako.agent import MinMaxAgent, RandomAgent
+from tentohako.agent import MinMaxAgent, RandomAgent, UCTAgent
 from tentohako.socket import Client
 
 
@@ -21,6 +21,8 @@ if __name__ == '__main__':
         agent = RandomAgent()
     elif args.a == "m":
         agent = MinMaxAgent()
+    elif args.a == "u":
+        agent = UCTAgent(timelimit=2)
     else:
         agent = RandomAgent()
 
