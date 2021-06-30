@@ -36,26 +36,27 @@ class UCTNode(Node):
 
 
 class UCTAgent(BaseAgent):
-    def __init__(self, name="uct", maxiterations=1000, timelimit=1, cpuct=0.3):
+    def __init__(self, name="uct", maxiterations=1000, blocksize=50,
+                 timelimit=1, cpuct=0.3):
         super().__init__(name)
         self.maxiterations = maxiterations
         self.timelimit = timelimit
         self.cpuct = cpuct
+        self.blocksize = blocksize
 
     def step(self, board, id_to_scores):
         root = UCTNode(None, board, None, self.player_id,
                        id_to_scores, cpuct=self.cpuct)
-        blockSize = 50
         nodesVisited = 0
 
         start_time = time.time()
 
         for i in range(self.maxiterations):
-            i += blockSize
+            i += self.blocksize
             if time.time() - start_time > self.timelimit:
                 break
 
-            for _ in range(blockSize):
+            for _ in range(self.blocksize):
                 node = root
                 variantBoard = copy.deepcopy(board)
                 variantScore = copy.deepcopy(id_to_scores)
