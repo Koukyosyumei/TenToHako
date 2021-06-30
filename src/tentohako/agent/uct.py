@@ -93,7 +93,7 @@ class UCTAgent(BaseAgent):
                 else:
                     result = {1: 0.5, -1: 0.5}
                 while node is not None:
-                    node.update(result)
+                    node.update(result, self.player_id)
                     node = node.parentNode
 
         print("num of visited nodes: ", nodesVisited)

@@ -40,9 +40,9 @@ class Node:
     def selectChild(self):
         pass
 
-    def update(self, result):
+    def update(self, result, player_id):
         self.visits += 1
-        self.wins += result[self.activePlayer]
+        self.wins += result[player_id]
 
     def mostVisitedChild(self):
         mostVisited = self.children[0]
