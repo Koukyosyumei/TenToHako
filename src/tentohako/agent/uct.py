@@ -8,15 +8,26 @@ from .base import BaseAgent
 
 
 class UCTNode(Node):
-    def __init__(self, parentNode, board, action, activePlayer):
-        super().__init__(parentNode, board, action, activePlayer)
+    def __init__(self, parentNode, board, action, activePlayer,
+                 id_to_scores, cpuct=0.3):
+        super().__init__(parentNode, board, action, activePlayer, id_to_scores)
+        self.cpuct = cpuct
+
+    def addChild(self, board, index, id_to_scores):
+        node = UCTNode(
+            self, board, self.unexamined[index],
+            self.activePlayer*-1, id_to_scores, cpuct=self.cpuct)
+        del self.unexamined[index]
+        self.children.append(node)
+        return node
 
     def selectChild(self):
         selected = None
         bestValue = -1e5
         for child in self.children:
-            uctValue = child.wins / child.visits + \
-                math.sqrt(2 + math.log(self.visits) / child.visits)
+            uctValue = child.wins / (child.visits + 1) + \
+                self.cpuct * \
+                math.sqrt(2 * math.log(self.visits) / (child.visits + 1))
             if (uctValue > bestValue):
                 selected = child
                 bestValue = uctValue
@@ -25,13 +36,15 @@ class UCTNode(Node):
 
 
 class UCTAgent(BaseAgent):
-    def __init__(self, name="uct", maxiterations=100, timelimit=1):
+    def __init__(self, name="uct", maxiterations=100, timelimit=1, cpuct=0.3):
         super().__init__(name)
         self.maxiterations = maxiterations
         self.timelimit = timelimit
+        self.cpuct = cpuct
 
     def step(self, board, id_to_scores):
-        root = UCTNode(None, board, None, self.player_id)
+        root = UCTNode(None, board, None, self.player_id,
+                       id_to_scores, cpuct=self.cpuct)
         blockSize = 50
         nodesVisited = 0
 
@@ -43,7 +56,7 @@ class UCTAgent(BaseAgent):
                 break
 
             for _ in range(blockSize):
-                node = copy.deepcopy(root)
+                node = root
                 variantBoard = copy.deepcopy(board)
                 variantScore = copy.deepcopy(id_to_scores)
                 activePlayer = self.player_id
@@ -56,16 +69,16 @@ class UCTAgent(BaseAgent):
                     activePlayer *= -1
 
                 if (len(node.unexamined) > 0):
-                    j = random.randint(0, len(node.unexamined))
+                    j = random.randint(0, len(node.unexamined)-1)
                     variantBoard, score = variantBoard.next_state(
                         node.unexamined[j][0], node.unexamined[j][1])
                     variantScore[activePlayer] += score
                     activePlayer *= -1
-                    node.addChild(variantBoard, j, copy.deepcopy(variantScore))
+                    node.addChild(variantBoard, j, variantScore)
 
                 actions = get_valid_action(variantBoard)
                 while (len(actions) > 0):
-                    j = random.randint(0, len(actions))
+                    j = random.randint(0, len(actions)-1)
                     variantBoard, score = variantBoard.next_state(
                         actions[j][0], actions[j][1])
                     variantScore[activePlayer] += score
@@ -73,6 +86,15 @@ class UCTAgent(BaseAgent):
                     nodesVisited += 1
                     actions = get_valid_action(variantBoard)
 
+                if variantScore[1] > variantScore[-1]:
+                    result = {1: 1, -1: 0}
+                elif variantScore[1] < variantScore[-1]:
+                    result = {1: 0, -1: 1}
+                else:
+                    result = {1: 0.5, -1: 0.5}
                 while node is not None:
-                    node.update(variantScore)
+                    node.update(result)
                     node = node.parentNode
+
+        print("num of visited nodes: ", nodesVisited)
+        return root.mostVisitedChild().action
