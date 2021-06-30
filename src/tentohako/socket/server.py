@@ -50,6 +50,7 @@ class Server:
         self.user_ids = []
         self.id_to_address = {}
         self.id_to_clients = {}
+        self.id_to_name = {}
         self.id_to_scores = {}
         self.next_player = None
         self.step = 0
@@ -71,6 +72,12 @@ class Server:
             print('Connection from {} is established on {}'.
                   format(address, time.time()))
 
+            # receive user_name
+            msg_name = self.id_to_clients[self.user_ids[i]].recv(4096)
+            name = json.loads(msg_name)
+            self.id_to_name[self.user_ids[i]] = name
+
+            # send user_id
             clientsocket.sendall(json.dumps(
                 {"uid": self.user_ids[i]}).encode())
 
@@ -130,3 +137,6 @@ class Server:
 
     def save_plot(self, path):
         self.viewer.save(path)
+
+    def close(self):
+        self.sock.close()

@@ -29,8 +29,15 @@ class Client:
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.connect(("localhost", self.host_port))
 
+        # send name
+        self._send_name()
+
         # receive id
         self._receive_uid()
+
+    def _send_name(self):
+        msg_name = json.dumps(self.agent.name).encode()
+        self.sock.send(msg_name)
 
     def _receive_uid(self):
         """Receive the id of the client from the host server
