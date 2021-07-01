@@ -19,6 +19,8 @@ class BaseAgent:
         Args:
             board: the instance of Board class which represents
                    the current board state.
+            id_to_scores: dictionary whose keys are user id and values
+                          are scores.
         """
         pass
 

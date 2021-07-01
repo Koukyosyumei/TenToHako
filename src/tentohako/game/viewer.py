@@ -8,6 +8,30 @@ from PIL import Image
 class Viewer:
     def __init__(self, board, height=6, width=6, tmp_dir="tmp",
                  id_to_color={1: "b", -1: "r"}, text_fontsize=36):
+        """Class for visualizing the board
+
+        Args:
+            board: the target board class
+            height: height of the plotted figure
+            width: width of the plotted figure
+            tmp_dir: temporary directory which will be created to
+                     store the intermidiate figures
+            id_to_color: the color of each player
+            text_fontsize: the font-size of the plotted text
+
+        Attributes:
+            fig: matplotlib figure which will be used for plotting
+            board: the target board class
+            tmp_dir: temporary directory which will be created to
+                     store the intermidiate figures
+            id_to_color: the color of each player
+            text_fontsize: the font-size of the plotted text
+            dots: the index of the dots of the board
+            xs: the x element of the dots within the coordinates of the board
+            ys: the x element of the dots within the coordinates of the board
+            im_log: list of the path to the intermidiate figures
+
+        """
         self.fig = plt.figure(figsize=(height, width))
         self.board = board
         self.tmp_dir = tmp_dir
@@ -23,9 +47,22 @@ class Viewer:
         os.makedirs(tmp_dir, exist_ok=True)
 
     def update_board(self, new_board):
+        """Update the board
+
+        Args:
+            new_board: new board
+        """
         self.board = new_board
 
     def update(self, step, player_id, action_i, action_j):
+        """Update the plotted figure
+
+        Args:
+            step: the index of the current step
+            player_id: the current active player
+            action_i: y element of the chosen action
+            action_j: x element of the chosen action
+        """
         if step == 0:
             points = {}
             for i in range(self.board.dim_y):
@@ -49,20 +86,28 @@ class Viewer:
 
                 if action_j < self.board.dim_y - 1:
                     # j+1 i
-                    if self.board.board_matrix[action_j+2][action_i] == '-' and\
-                            self.board.board_matrix[action_j+1][action_i+1] == '|' and\
-                            self.board.board_matrix[action_j+1][action_i-1] == '|':
-                        plt.fill([action_i-1, action_i+1, action_i+1, action_i-1],
-                                 [action_j, action_j, action_j+2, action_j+2], alpha=0.3,
+                    if self.board.board_matrix[action_j+2][action_i] == '-'\
+                        and self.board.board_matrix[action_j+1][action_i+1]\
+                        == '|' and\
+                            self.board.board_matrix[action_j+1][action_i-1]\
+                            == '|':
+                        plt.fill([action_i-1, action_i+1,
+                                  action_i+1, action_i-1],
+                                 [action_j, action_j, action_j+2, action_j+2],
+                                 alpha=0.3,
                                  color=self.id_to_color[player_id])
 
                 if action_j > 0:
                     # j-1, i
-                    if self.board.board_matrix[action_j-2][action_i] == '-' and\
-                            self.board.board_matrix[action_j-1][action_i+1] == '|' and\
-                            self.board.board_matrix[action_j-1][action_i-1] == '|':
-                        plt.fill([action_i-1, action_i+1, action_i+1, action_i-1],
-                                 [action_j-2, action_j-2, action_j, action_j], alpha=0.3,
+                    if self.board.board_matrix[action_j-2][action_i] == '-'\
+                        and self.board.board_matrix[action_j-1][action_i+1]\
+                        == '|' and\
+                            self.board.board_matrix[action_j-1][action_i-1]\
+                            == '|':
+                        plt.fill([action_i-1, action_i+1,
+                                  action_i+1, action_i-1],
+                                 [action_j-2, action_j-2, action_j, action_j],
+                                 alpha=0.3,
                                  color=self.id_to_color[player_id])
 
             else:
@@ -74,19 +119,25 @@ class Viewer:
 
                 if action_i < self.board.dim_x - 1:
                     # j, i+1
-                    if self.board.board_matrix[action_j][action_i+2] == '|' and\
-                        self.board.board_matrix[action_j+1][action_i+1] == '-' and\
-                            self.board.board_matrix[action_j-1][action_i+1] == '-':
+                    if self.board.board_matrix[action_j][action_i+2] == '|'\
+                        and self.board.board_matrix[action_j+1][action_i+1]\
+                        == '-' and\
+                            self.board.board_matrix[action_j-1][action_i+1]\
+                            == '-':
                         plt.fill([action_i, action_i+2, action_i+2, action_i],
-                                 [action_j-1, action_j-1, action_j+1, action_j+1], alpha=0.3,
+                                 [action_j-1, action_j-1,
+                                  action_j+1, action_j+1], alpha=0.3,
                                  color=self.id_to_color[player_id])
                 if action_i > 0:
                     # j, i-1
-                    if self.board.board_matrix[action_j][action_i-2] == '|' and\
-                        self.board.board_matrix[action_j+1][action_i-1] == '-' and\
-                            self.board.board_matrix[action_j-1][action_i-1] == '-':
+                    if self.board.board_matrix[action_j][action_i-2] == '|'\
+                        and self.board.board_matrix[action_j+1][action_i-1]\
+                        == '-' and\
+                            self.board.board_matrix[action_j-1][action_i-1]\
+                            == '-':
                         plt.fill([action_i-2, action_i, action_i, action_i-2],
-                                 [action_j-1, action_j-1, action_j+1, action_j+1], alpha=0.3,
+                                 [action_j-1, action_j-1,
+                                  action_j+1, action_j+1], alpha=0.3,
                                  color=self.id_to_color[player_id])
 
         plt.axis([-0.1, self.board.dim_x-1+0.1,
@@ -100,6 +151,13 @@ class Viewer:
         self.im_log.append(self.tmp_dir + f"/{step}.png")
 
     def save(self, path, interval=300, repear_delay=1000):
+        """Creae and save the gif filed which shows the history of the game
+
+        Args:
+            path: the path to the created gif file
+            interval: the interval time between each frames
+            repear_delay: the delay time
+        """
         fig = plt.figure()
         ims = []
         for impath in self.im_log:
@@ -118,4 +176,5 @@ class Viewer:
         try:
             os.rmdir(self.tmp_dir)
         except OSError as e:
+            print(e)
             pass

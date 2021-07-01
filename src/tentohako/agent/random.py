@@ -21,6 +21,8 @@ class RandomAgent(BaseAgent):
         Args:
             board: the instance of Board class which represents
                    the current board state.
+            id_to_scores: dictionary whose keies are the user id and the
+                          values are scores
 
         Returns:
             picked_action: randomly chosen action

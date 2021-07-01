@@ -3,7 +3,7 @@ import math
 import random
 import time
 
-from ..game import Node, get_valid_action
+from ..game import Node
 from .base import BaseAgent
 
 
@@ -38,6 +38,22 @@ class UCTNode(Node):
 class UCTAgent(BaseAgent):
     def __init__(self, name="uct", maxiterations=1000, blocksize=50,
                  timelimit=1, cpuct=0.3):
+        """An Agent which uses UCT (monte-calro tree search with upper bound)
+
+        Args:
+            name: the name of the agent
+            maxiterations: the maximum number of iterations for searcing
+            blocksize: block size for searcing
+            timelimit: time-limit (s)
+            cpuct: weight (parameter of UCT)
+
+        Attributes:
+            name: the name of the agent
+            maxiterations: the maximum number of iterations for searcing
+            blocksize: block size for searcing
+            timelimit: time-limit (s)
+            cpuct: weight
+        """
         super().__init__(name)
         self.maxiterations = maxiterations
         self.timelimit = timelimit
@@ -45,6 +61,17 @@ class UCTAgent(BaseAgent):
         self.blocksize = blocksize
 
     def step(self, board, id_to_scores):
+        """Return the action based on the given board.
+
+        Args:
+            board: the instance of Board class which represents
+                   the current board state.
+            id_to_scores: dictionary whose keys are user id and values
+                          are scores.
+
+        Returns:
+            picked_action: picked action
+        """
         root = UCTNode(None, board, None, self.player_id,
                        id_to_scores, cpuct=self.cpuct)
         nodesVisited = 0
@@ -77,7 +104,7 @@ class UCTAgent(BaseAgent):
                     activePlayer *= -1
                     node.addChild(variantBoard, j, variantScore)
 
-                actions = get_valid_action(variantBoard)
+                actions = self.get_valid_action(variantBoard)
                 while (len(actions) > 0):
                     j = random.randint(0, len(actions)-1)
                     variantBoard, score = variantBoard.next_state(
@@ -85,7 +112,7 @@ class UCTAgent(BaseAgent):
                     variantScore[str(activePlayer)] += score
                     activePlayer *= -1
                     nodesVisited += 1
-                    actions = get_valid_action(variantBoard)
+                    actions = self.get_valid_action(variantBoard)
 
                 if variantScore["1"] > variantScore["-1"]:
                     result = {1: 1, -1: 0}
@@ -98,4 +125,5 @@ class UCTAgent(BaseAgent):
                     node = node.parentNode
 
         print("num of visited nodes: ", nodesVisited)
-        return root.mostVisitedChild().action
+        picked_action = root.mostVisitedChild().action
+        return picked_action
