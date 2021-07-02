@@ -52,7 +52,7 @@ class MinMaxAgent(BaseAgent):
         return best
 
     def step(self, board, id_to_scores):
-        """
+        """Return the action based on the given board.
 
         Args:
             board: the instance of Board class which represents
