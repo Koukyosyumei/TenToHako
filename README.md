@@ -48,5 +48,5 @@ The agent should have the `set_player_id`, `get_valid_action`, and `step` method
 
 ## 4. Supported Algorithms
 
-This package already implemented MIN/MAX, Monte-Carlo tree search with upper bound, and Q-learning. The detailed comparison is coming soon!
+This package already implemented MIN/MAX, Monte-Carlo tree search with UCB (UCT), and Q-learning. The detailed comparison is coming soon!
 

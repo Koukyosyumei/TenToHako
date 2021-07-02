@@ -38,7 +38,7 @@ class UCTNode(Node):
 class UCTAgent(BaseAgent):
     def __init__(self, name="uct", maxiterations=1000, blocksize=50,
                  timelimit=1, cpuct=0.3):
-        """An Agent which uses UCT (monte-calro tree search with upper bound)
+        """An Agent which uses UCT (UCB applied to Trees)
 
         Args:
             name: the name of the agent
