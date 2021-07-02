@@ -17,7 +17,7 @@ The game system works as follows:
     1. The server creates the initial state (you can define any number of columns and rows and the range of scores)
     2. All clients connect to the server and give the client-specified username to the server.
     3. The server generates the user-id (1, or -1) and sends it to the clients. The client with id "1" will move first.
-    4. THe game starts and repeats the following a ~ b
+    4. The game starts and repeats the following a ~ b
         a. The server sends the current state to the clients
         b. The active player picks the action and sends it to the server
         c. THe server generates the new state from the received action and calculates the earned score
@@ -25,7 +25,7 @@ The game system works as follows:
 
 The server sends the state to the clients in JSON format, and the JSON includes the following data.
 
-    {"board_matrix": the current status of the board in nestted-list representation,
+    {"board_matrix": the current status of the board in nested-list representation,
      "ncol": number of columns of the board (int),
      "nrow": number of rows of the board (int),
      "done": indicates the game-over (bool),
