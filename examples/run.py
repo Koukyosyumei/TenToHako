@@ -27,15 +27,21 @@ if __name__ == '__main__':
                         type=int, default=3)
     parser.add_argument("-r", help="number of columns",
                         type=int, default=3)
-    parser.add_argument("--a1", help="agent type",
+    parser.add_argument("--a1",
+                        help="agent type r: random, m: minmax,\
+                        u: uct, q: q-learning",
                         type=str, default="r")
-    parser.add_argument("--a2", help="agent type",
+    parser.add_argument("--a2",
+                        help="agent type r: random, m: minmax,\
+                        u: uct, q: q-learning",
                         type=str, default="r")
     parser.add_argument("-v", help="plot (1) or not (0)",
                         type=int, default=1)
-    parser.add_argument("--lp", help="log file",
+    parser.add_argument("--lp", help="path to the log file",
                         type=str, default="log.txt")
-    parser.add_argument("--gp", help="gif file",
+    parser.add_argument("--gp", help="name of the gif file,\
+                         this program will generate the gif file\
+                         like <gp>_<number_of_game>.gif",
                         type=str, default="experiment")
     args = parser.parse_args()
     run(args.n, args.c, args.r, args.a1, args.a2, args.v, args.lp, args.gp)

@@ -52,11 +52,25 @@ Carlo tree search with UCB (UCT), and Q-learning. The following picture shows th
 
 <img src="img/comparison.png" width=300>
 
-## Examples
+## 5. Examples
 
-If you want to experiment with this package quickly, you can use experiments/run.py. The following command makes random agents fight two times and generate the log file and GIF pictures.
+If you want to experiment with this package quickly, you can use [examples/run.py](examples/run.py). The following command makes random agents fight two times and generate the log file and GIF pictures.
 
     python experiments/run.py -n 2 --a1 r --a2 r
+
+The optional arguments of [examples/run.py](examples/run.py):
+
+    -h, --help  show this help message and exit
+    -n N        number of games
+    -c C        number of rows
+    -r R        number of columns
+    --a1 A1     agent type r: random, m: minmax, u: uct, q: q-learning
+    --a2 A2     agent type r: random, m: minmax, u: uct, q: q-learning
+    -v V        plot (1) or not (0)
+    --lp LP     path to the log file
+    --gp GP     name of the gif file, this program will generate the gif file like <gp>_<number_of_game>.gif
+
+
 
 
 
