@@ -7,10 +7,14 @@ import numpy as np
 
 from .base import BaseAgent
 
+DEFAULT_QVALUE = 0
+def _return_default_q_value(): return DEFAULT_QVALUE
+def _return_default_dict(): return defaultdict(_return_default_q_value)
+
 
 class QLearningAgent(BaseAgent):
     def __init__(self, name="q-learning", epsilon=0.2,
-                 alpha=0.4, discount=0.9, default_qvalue=0):
+                 alpha=0.4, discount=0.9):
         """An agents which uses Q-learning for search
 
         Args:
@@ -18,7 +22,6 @@ class QLearningAgent(BaseAgent):
             epsilon: how gree this agent is
             alpha: learning rete
             discount: discount rate for future rewards
-            default_qvalue: defaul q-value (default = 0)
 
         Attributes
             name: the name of this Agent
@@ -32,8 +35,7 @@ class QLearningAgent(BaseAgent):
         self.alpha = alpha
         self.discount = discount
 
-        self._qvalues = defaultdict(
-            lambda: defaultdict(lambda: default_qvalue))
+        self._qvalues = defaultdict(_return_default_dict)
 
     def adaptive_rate(self, t):
         """Culculate adaptive rate based on the current step
