@@ -6,14 +6,15 @@ from ..game import Board, Viewer
 
 
 class Server:
-    def __init__(self, port,
+    def __init__(self, host_name, host_port,
                  ncol, nrow, num_player=2,
                  score_min=1, score_max=9,
                  plot=True, **kwargs):
         """Class which represents the host server of the game.
 
         Args:
-            port: the port number of the host server.
+            hostname: the host name
+            host_port: the port number of the host server.
             ncol: number of the columns of the board
             nrow: number of the row of the board
             score_min: the minimum score of the cell
@@ -22,7 +23,7 @@ class Server:
                         (default = 2)
 
         Attributes:
-            port: the port number of the host server.
+            host_port: the port number of the host server.
             num_player: the total number of the participants in the game.
             sock: socket of the host server.
             board: the instance of the Board class
@@ -36,11 +37,12 @@ class Server:
             next_player: the id of next player
             step: the current step number
         """
-        self.port = port
+        self.host_name = host_name
+        self.host_port = host_port
         self.num_player = num_player
 
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.bind(("localhost", port))
+        self.sock.bind(("localhost", host_port))
         self.sock.listen(num_player)
 
         self.board = Board([], ncol, nrow, score_min=score_min,

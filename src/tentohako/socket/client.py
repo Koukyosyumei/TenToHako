@@ -5,13 +5,14 @@ from ..game import Board
 
 
 class Client:
-    def __init__(self, agent, host_port):
+    def __init__(self, agent, host_name, host_port):
         """Class which represents the participant of the game.
 
         Args:
             agent: class which defines the agent.
                    This class should have member function `step`,
                    which takes the instance of the Board class as an argument.
+            host_name: the host name
             host_port: port number of the host server.
 
         Attributes:
@@ -23,11 +24,12 @@ class Client:
             uid: the id of the client.
         """
         self.agent = agent
+        self.host_name = host_name
         self.host_port = host_port
 
         # connect to the server
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.connect(("localhost", self.host_port))
+        self.sock.connect((self.host_name, self.host_port))
 
         # send name
         self._send_name()

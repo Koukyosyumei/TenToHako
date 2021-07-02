@@ -41,7 +41,7 @@ The client also sends the picked action to the server in JSON as follows.
 
 TenToHako offers the primary client and agent. The usage of the `Client` class is simple as the following example. If the `Client` instance is created with your agent and port number, the `client` automatically connects to the server, sends the agent's name, and receives the ID. Then, the `play` method allows the client to start the game.
 
-    client = Client(agent, host_port)
+    client = Client(agent, host_port, host_port)
     client.play()
 
 The agent should have the `set_player_id`, `get_valid_action`, and `step` method. The `set_player_id` method sets the agent's id to the instance, and the `get_valid_action` method returns the list of valid actions based on the current state. The `step` method returns the picked action from the current state with the agent's algorithm. If you use Python, you can create your agent with BaseAgent that already implements `set_player_id` and `get_valid_action.`
