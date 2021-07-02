@@ -3,6 +3,10 @@
 TenToHako is a Python package that allows you to play 'Dots and Boxes,' which is a famous pencil-and-paper game.
 You can easily create the game server and test the basic AI algorithms such as min-max, Monte-Carlo tree search, and Q-learning.
 
+## 0. Install
+
+    pip install git+https://github.com/Koukyosyumei/TenToHako
+
 ## 1. Rule
 
 <img src="img/sample.gif" width=300>
