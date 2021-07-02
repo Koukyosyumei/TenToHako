@@ -48,5 +48,15 @@ The agent should have the `set_player_id`, `get_valid_action`, and `step` method
 
 ## 4. Supported Algorithms
 
-This package already implemented MIN/MAX, Monte-Carlo tree search with UCB (UCT), and Q-learning. The detailed comparison is coming soon!
+Carlo tree search with UCB (UCT), and Q-learning. The following picture shows the comparison of each algorithm, and each cell represents the winning rate of the horizontal algorithm against the vertical algorithm. The warmer color means a higher winning rate, and for example, the top-right cell indicates that Q-learning is better than the random agent. Please be careful that this comparison is based on the rough experiment, and we did not comprehensively search all hyper-parameters.
+
+<img src="img/comparison.png" width=300>
+
+## Examples
+
+If you want to experiment with this package quickly, you can use experiments/run.py. The following command makes random agents fight two times and generate the log file and GIF pictures.
+
+    python experiments/run.py -n 2 --a1 r --a2 r
+
+
 
