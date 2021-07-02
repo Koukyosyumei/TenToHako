@@ -1,4 +1,5 @@
 import math
+import pickle
 import random
 from collections import defaultdict
 
@@ -194,3 +195,21 @@ class QLearningAgent(BaseAgent):
 
         picked_action = self.get_action(board)
         return picked_action
+
+    def save(self, path):
+        """Save self._qvalue which represets the Q[(s a)]
+
+        Args:
+            path: output path
+        """
+        with open(path, mode='wb') as f:
+            pickle.dump(self._qvalues, f)
+
+    def load(self, path):
+        """Load pickle which represets the Q[(s a)]
+
+        Args:
+            path: path to pickle
+        """
+        with open(path, mode='rb') as f:
+            self._qvalues = pickle.load(f)
