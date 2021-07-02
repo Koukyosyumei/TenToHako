@@ -9,14 +9,40 @@ from .base import BaseAgent
 
 class QLearningAgent(BaseAgent):
     def __init__(self, name="q-learning", epsilon=0.2,
-                 alpha=0.4, discount=0.9):
+                 alpha=0.4, discount=0.9, default_qvalue=0):
+        """An agents which uses Q-learning for search
+
+        Args:
+            name: the name of this Agent
+            epsilon: how gree this agent is
+            alpha: learning rete
+            discount: discount rate for future rewards
+            default_qvalue: defaul q-value (default = 0)
+
+        Attributes
+            name: the name of this Agent
+            epsilon: how gree this agent is
+            alpha: learning rete
+            discount: discount rate for future rewards
+            _qvalues: dictionary which stores Q[(s, a)]
+        """
         super().__init__(name)
         self.epsilon = epsilon
         self.alpha = alpha
         self.discount = discount
-        self._qvalues = defaultdict(lambda: defaultdict(lambda: 0))
+
+        self._qvalues = defaultdict(
+            lambda: defaultdict(lambda: default_qvalue))
 
     def adaptive_rate(self, t):
+        """Culculate adaptive rate based on the current step
+
+        Args:
+            t: current step
+
+        Returns:
+            1.1 - max([0.1, min(1, math.log((t)/25))])
+        """
         return 1.1 - max([0.1, min(1, math.log((t)/25))])
 
     def get_qvalue(self, string_state, action):
@@ -147,6 +173,11 @@ class QLearningAgent(BaseAgent):
             chosen_action = random.choice(possible_actions)
 
         return chosen_action
+
+    def eval(self):
+        """Set the epsilon to zero
+        """
+        self.epsilon = 0
 
     def step(self, board, id_to_scores):
         """Return the action based on the given board.
