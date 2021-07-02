@@ -20,7 +20,7 @@ if __name__ == '__main__':
     parser.add_argument("-t", help="time limit when selecting the action",
                         type=int, default=2)
     parser.add_argument("-m", help="path to saved model",
-                        type=str, default="../saved_models/qlearning_ncol_3_nrow_3_scoremin_1_scoremax_9_iterations_3000.pickle")
+                        type=str, default="../saved_models/qlearning_ncol_2_nrow_2_scoremin_1_scoremax_9_iterations_10000.pickle")
     args = parser.parse_args()
 
     if args.a == "r":
