@@ -3,8 +3,8 @@ import argparse
 from tentohako.socket import Server
 
 
-def main(host_port, ncol, nrow, log_path, visualize, gif_path):
-    server = Server(host_port, ncol, nrow)
+def main(host_name, host_port, ncol, nrow, log_path, visualize, gif_path):
+    server = Server(host_name, host_port, ncol, nrow)
     server.set_clients()
     server.play()
     if visualize == 1:
@@ -20,19 +20,21 @@ def main(host_port, ncol, nrow, log_path, visualize, gif_path):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    parser.add_argument("-n", help="host name",
+                        type=str, default="localhost")
     parser.add_argument("-p", help="host port",
                         type=int)
     parser.add_argument("-c", help="number of rows",
                         type=int)
     parser.add_argument("-r", help="number of columns",
                         type=int)
-    parser.add_argument("-v", help="gif file",
-                        type=int)
-    parser.add_argument("--lo", help="log file",
+    parser.add_argument("-v", help="plot (1) or not (0)",
+                        type=int, default=1)
+    parser.add_argument("--lp", help="log file",
                         type=str)
-    parser.add_argument("--go", help="gif file",
+    parser.add_argument("--gp", help="gif file",
                         type=str)
 
     args = parser.parse_args()
 
-    main(args.p, args.c, args.r, args.lo, args.v, args.go)
+    main(args.n, args.p, args.c, args.r, args.lp, args.v, args.gp)

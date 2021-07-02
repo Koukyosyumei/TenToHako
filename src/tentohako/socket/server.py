@@ -13,7 +13,7 @@ class Server:
         """Class which represents the host server of the game.
 
         Args:
-            hostname: the host name
+            host_name: the host name
             host_port: the port number of the host server.
             ncol: number of the columns of the board
             nrow: number of the row of the board
@@ -21,6 +21,7 @@ class Server:
             score_max: the mamimum score of the cell
             num_player: the total number of the participants in the game.
                         (default = 2)
+            plot: plot the figure or not
 
         Attributes:
             host_port: the port number of the host server.
@@ -36,6 +37,7 @@ class Server:
                            scores of the users
             next_player: the id of next player
             step: the current step number
+            plot: plot the figure or not
         """
         self.host_name = host_name
         self.host_port = host_port

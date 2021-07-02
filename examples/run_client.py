@@ -4,8 +4,8 @@ from tentohako.agent import MinMaxAgent, QLearningAgent, RandomAgent, UCTAgent
 from tentohako.socket import Client
 
 
-def main(agent, host_port):
-    client = Client(agent, host_port)
+def main(agent, host_name, host_port):
+    client = Client(agent, host_name, host_port)
     client.play()
 
 
@@ -13,8 +13,17 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-a", help="the type of your agent",
                         type=str)
+    parser.add_argument("-n", help="host name",
+                        type=str, default="localhost")
     parser.add_argument("-p", help="host port",
                         type=int)
+    parser.add_argument("-t", help="time limit when selecting the action",
+                        type=int, default=2)
+    parser.add_argument("-m", help="path to saved model",
+                        type=str, default="../saved_\
+                            models/qlearning_ncol_3_\
+                                nrow_3_scoremin_1_scor\
+                                    emax_9_iterations_3000.pickle")
     args = parser.parse_args()
 
     if args.a == "r":
@@ -22,13 +31,12 @@ if __name__ == '__main__':
     elif args.a == "m":
         agent = MinMaxAgent()
     elif args.a == "u":
-        agent = UCTAgent(timelimit=2)
+        agent = UCTAgent(timelimit=args.t)
     elif args.a == "q":
         agent = QLearningAgent()
-        agent.load(
-            "../saved_models/qlearning_ncol_3_nrow_3_scoremin_1_scoremax_9_iterations_3000.pickle")
+        agent.load(args.m)
         agent.eval()
     else:
         agent = RandomAgent()
 
-    main(agent, args.p)
+    main(agent, args.n, args.p)
