@@ -1,4 +1,9 @@
 experiments/*.txt
+examples/*.txt
+examples/*.gif
+examples/tmp
+examples/report.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -26,10 +31,6 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-
-examples/*.txt
-examples/*.gif
-examples/tmp
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
