@@ -1,6 +1,8 @@
 experiments/*.txt
 examples/*.txt
 examples/*.gif
+examples/*.pickle
+examples/*.png
 examples/tmp
 examples/report.py
 
