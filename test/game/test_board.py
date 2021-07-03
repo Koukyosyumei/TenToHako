@@ -1,13 +1,13 @@
-
-
 def test_board():
     from tentohako.game import Board
 
-    board_matrix = [['*', '-', '*', '-', '*'],
-                    ['|',  8,  '|',  2,  '|'],
-                    ['*', ' ', '*', ' ', '*'],
-                    [' ',  5,  '|',  3,  '|'],
-                    ['*', '-', '*', '-', '*']]
+    board_matrix = [
+        ["*", "-", "*", "-", "*"],
+        ["|", 8, "|", 2, "|"],
+        ["*", " ", "*", " ", "*"],
+        [" ", 5, "|", 3, "|"],
+        ["*", "-", "*", "-", "*"],
+    ]
 
     board = Board([], 2, 2)
     board.initialize()
@@ -18,8 +18,9 @@ def test_board():
     for j in range(board.dim_y):
         for i in range(board.dim_x):
             if i % 2 == 1 and j % 2 == 1:
-                assert board.board_matrix[j][i] in\
-                    list(range(board.score_min, board.score_max+1))
+                assert board.board_matrix[j][i] in list(
+                    range(board.score_min, board.score_max + 1)
+                )
             elif i % 2 == 0 and j % 2 == 0:
                 assert board.board_matrix[j][i] == "*"
             else:
@@ -28,11 +29,13 @@ def test_board():
     board.board_matrix = board_matrix
     assert board.is_done() is False
 
-    next_board_matrix = [['*', '-', '*', '-', '*'],
-                         ['|', 8, '|', 2, '|'],
-                         ['*', '-', '*', ' ', '*'],
-                         [' ', 5, '|', 3, '|'],
-                         ['*', '-', '*', '-', '*']]
+    next_board_matrix = [
+        ["*", "-", "*", "-", "*"],
+        ["|", 8, "|", 2, "|"],
+        ["*", "-", "*", " ", "*"],
+        [" ", 5, "|", 3, "|"],
+        ["*", "-", "*", "-", "*"],
+    ]
     next_board, score = board.next_state(2, 1)
     assert next_board.board_matrix == next_board_matrix
     assert score == 8

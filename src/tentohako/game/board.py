@@ -3,8 +3,7 @@ import random
 
 
 class Board:
-    def __init__(self, board_matrix, ncol, nrow,
-                 score_min=1, score_max=9):
+    def __init__(self, board_matrix, ncol, nrow, score_min=1, score_max=9):
         """Class represents the board of the dots and boxes
 
         Args:
@@ -30,13 +29,13 @@ class Board:
         self.nrow = nrow
         self.score_min = score_min
         self.score_max = score_max
-        self.dim_x = ncol*2 + 1
-        self.dim_y = nrow*2 + 1
+        self.dim_x = ncol * 2 + 1
+        self.dim_y = nrow * 2 + 1
 
     def initialize(self):
         """Initialize the board matrix.
-           Each cell is filled randomly with a number between
-           score_min and score_max.
+        Each cell is filled randomly with a number between
+        score_min and score_max.
         """
         for i in range(self.dim_y):
             r = []
@@ -73,28 +72,36 @@ class Board:
         elif j % 2 == 0 and i % 2 == 1:
             next_board.board_matrix[j][i] = "-"
             if j < next_board.dim_y - 1:
-                if next_board.board_matrix[j+2][i] == '-' and\
-                        next_board.board_matrix[j+1][i+1] == '|' and\
-                        next_board.board_matrix[j+1][i-1] == '|':
-                    score += next_board.board_matrix[j+1][i]
+                if (
+                    next_board.board_matrix[j + 2][i] == "-"
+                    and next_board.board_matrix[j + 1][i + 1] == "|"
+                    and next_board.board_matrix[j + 1][i - 1] == "|"
+                ):
+                    score += next_board.board_matrix[j + 1][i]
             if j > 0:
-                if next_board.board_matrix[j-2][i] == '-' and\
-                        next_board.board_matrix[j-1][i+1] == '|' and\
-                        next_board.board_matrix[j-1][i-1] == '|':
-                    score += next_board.board_matrix[j-1][i]
+                if (
+                    next_board.board_matrix[j - 2][i] == "-"
+                    and next_board.board_matrix[j - 1][i + 1] == "|"
+                    and next_board.board_matrix[j - 1][i - 1] == "|"
+                ):
+                    score += next_board.board_matrix[j - 1][i]
 
         else:
-            next_board.board_matrix[j][i] = '|'
+            next_board.board_matrix[j][i] = "|"
             if i < next_board.dim_x - 1:
-                if next_board.board_matrix[j][i+2] == '|' and\
-                    next_board.board_matrix[j+1][i+1] == '-' and\
-                        next_board.board_matrix[j-1][i+1] == '-':
-                    score += next_board.board_matrix[j][i+1]
+                if (
+                    next_board.board_matrix[j][i + 2] == "|"
+                    and next_board.board_matrix[j + 1][i + 1] == "-"
+                    and next_board.board_matrix[j - 1][i + 1] == "-"
+                ):
+                    score += next_board.board_matrix[j][i + 1]
             if i > 0:
-                if next_board.board_matrix[j][i-2] == '|' and\
-                    next_board.board_matrix[j+1][i-1] == '-' and\
-                        next_board.board_matrix[j-1][i-1] == '-':
-                    score += next_board.board_matrix[j][i-1]
+                if (
+                    next_board.board_matrix[j][i - 2] == "|"
+                    and next_board.board_matrix[j + 1][i - 1] == "-"
+                    and next_board.board_matrix[j - 1][i - 1] == "-"
+                ):
+                    score += next_board.board_matrix[j][i - 1]
 
         return next_board, score
 
@@ -122,9 +129,9 @@ class Board:
         boardstring += "   "
 
         for i in range(self.dim_x):
-            if (i % 2 == 0):
+            if i % 2 == 0:
                 boardstring += str(int(i / 2))
-                boardstring += ' '*(5 - int(i/2)//10)
+                boardstring += " " * (5 - int(i / 2) // 10)
         boardstring += "\n"
 
         if self.dim_x > 9:
@@ -136,15 +143,15 @@ class Board:
         boardstring += "\n"
 
         for j in range(self.dim_y):
-            if self.dim_x > 9 and (j/2) < 10:
+            if self.dim_x > 9 and (j / 2) < 10:
                 boardstring += " "
-            if (j % 2 == 0):
-                boardstring += str(int(j/2)) + "| "
+            if j % 2 == 0:
+                boardstring += str(int(j / 2)) + "| "
             else:
-                boardstring += " "*len(str(int((j-1)/2))) + "| "
+                boardstring += " " * len(str(int((j - 1) / 2))) + "| "
             for z in range(self.dim_x):
                 boardstring += str(self.board_matrix[j][z])
-                boardstring += '  '
+                boardstring += "  "
             boardstring += "\n"
 
         return boardstring

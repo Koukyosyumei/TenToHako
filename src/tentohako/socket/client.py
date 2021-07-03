@@ -38,12 +38,12 @@ class Client:
         self._receive_uid()
 
     def _send_name(self):
+        """Send the user name to the server"""
         msg_name = json.dumps(self.agent.name).encode()
         self.sock.send(msg_name)
 
     def _receive_uid(self):
-        """Receive the id of the client from the host server
-        """
+        """Receive the id of the client from the host server"""
         # send the id to the server
         msg_uid = self.sock.recv(4096)
         self.uid = json.loads(msg_uid)["uid"]
@@ -51,15 +51,13 @@ class Client:
         self.agent.set_player_id(self.uid)
 
     def play(self):
-        """Play the game
-        """
+        """Play the game"""
         while True:
             try:
                 # receive the state from the server
                 msg_state = self.sock.recv(4096)
                 state = json.loads(msg_state)
-                board = Board(state["board_matrix"],
-                              state["ncol"], state["nrow"])
+                board = Board(state["board_matrix"], state["ncol"], state["nrow"])
 
                 if board.is_done():
                     self.sock.close()
@@ -68,8 +66,7 @@ class Client:
                 if self.uid == state["next_player"]:
                     # choose the action
                     action = self.agent.step(board, state["score"])
-                    msg_action = json.dumps({"j": action[0],
-                                             "i": action[1]}).encode()
+                    msg_action = json.dumps({"j": action[0], "i": action[1]}).encode()
                     self.sock.send(msg_action)
 
             except Exception as e:

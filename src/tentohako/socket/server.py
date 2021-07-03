@@ -6,10 +6,18 @@ from ..game import Board, Viewer
 
 
 class Server:
-    def __init__(self, host_name, host_port,
-                 ncol, nrow, num_player=2,
-                 score_min=1, score_max=9,
-                 plot=True, **kwargs):
+    def __init__(
+        self,
+        host_name,
+        host_port,
+        ncol,
+        nrow,
+        num_player=2,
+        score_min=1,
+        score_max=9,
+        plot=True,
+        **kwargs,
+    ):
         """Class which represents the host server of the game.
 
         Args:
@@ -47,8 +55,7 @@ class Server:
         self.sock.bind(("localhost", host_port))
         self.sock.listen(num_player)
 
-        self.board = Board([], ncol, nrow, score_min=score_min,
-                           score_max=score_max)
+        self.board = Board([], ncol, nrow, score_min=score_min, score_max=score_max)
         self.board.initialize()
 
         self.user_ids = []
@@ -65,16 +72,16 @@ class Server:
             self.viewer.update(0, 0, 0, 0)
 
     def set_clients(self):
-        """Register clients
-        """
+        """Register clients"""
         self.user_ids = [1, -1]
         for i in range(self.num_player):
             clientsocket, address = self.sock.accept()
             self.id_to_clients[self.user_ids[i]] = clientsocket
             self.id_to_address[self.user_ids[i]] = address
             self.id_to_scores[self.user_ids[i]] = 0
-            print('Connection from {} is established on {}'.
-                  format(address, time.time()))
+            print(
+                "Connection from {} is established on {}".format(address, time.time())
+            )
 
             # receive user_name
             msg_name = self.id_to_clients[self.user_ids[i]].recv(4096)
@@ -82,31 +89,31 @@ class Server:
             self.id_to_name[self.user_ids[i]] = name
 
             # send user_id
-            clientsocket.sendall(json.dumps(
-                {"uid": self.user_ids[i]}).encode())
+            clientsocket.sendall(json.dumps({"uid": self.user_ids[i]}).encode())
 
     def _send_current_state(self):
-        """Send the current state to all clients.
-        """
-        msg_state = json.dumps({"board_matrix": self.board.board_matrix,
-                                "ncol": self.board.ncol,
-                                "nrow": self.board.nrow,
-                                "done": self.board.is_done(),
-                                "score": self.id_to_scores,
-                                "next_player": self.next_player}).encode()
+        """Send the current state to all clients."""
+        msg_state = json.dumps(
+            {
+                "board_matrix": self.board.board_matrix,
+                "ncol": self.board.ncol,
+                "nrow": self.board.nrow,
+                "done": self.board.is_done(),
+                "score": self.id_to_scores,
+                "next_player": self.next_player,
+            }
+        ).encode()
         for idx in self.user_ids:
             self.id_to_clients[idx].sendall(msg_state)
 
     def _receive_and_apply_picked_actions(self):
-        """Get the picked action from the current player and update the state
-        """
+        """Get the picked action from the current player and update the state"""
         # receive the picked action from the server
         msg_action = self.id_to_clients[self.next_player].recv(4096)
         action = json.loads(msg_action)
 
         if self.plot:
-            self.viewer.update(self.step, self.next_player,
-                               action["i"], action["j"])
+            self.viewer.update(self.step, self.next_player, action["i"], action["j"])
 
         # generate the new state and culculate the score
         self.board, score = self.board.next_state(action["j"], action["i"])
@@ -140,7 +147,13 @@ class Server:
             print("-------------------------------------")
 
     def save_plot(self, path):
+        """Save the GIF of the game to the give path
+
+        Args:
+            path: path to the output GIF
+        """
         self.viewer.save(path)
 
     def close(self):
+        """Close the socket"""
         self.sock.close()

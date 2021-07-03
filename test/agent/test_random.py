@@ -3,14 +3,16 @@ def test_randomagent():
     from tentohako.agent import RandomAgent
     from tentohako.game import Board
 
-    board_matrix = [['*', '-', '*', '-', '*'],
-                    ['|',  8,  '|',  2,  '|'],
-                    ['*', ' ', '*', ' ', '*'],
-                    [' ',  5,  '|',  3,  '|'],
-                    ['*', '-', '*', '-', '*']]
+    board_matrix = [
+        ["*", "-", "*", "-", "*"],
+        ["|", 8, "|", 2, "|"],
+        ["*", " ", "*", " ", "*"],
+        [" ", 5, "|", 3, "|"],
+        ["*", "-", "*", "-", "*"],
+    ]
     name = "random"
     player_id = 1
-    id_to_scores = {'1': 0, '-1': 0}
+    id_to_scores = {"1": 0, "-1": 0}
 
     board = Board([], 2, 2)
     board.initialize()

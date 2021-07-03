@@ -46,7 +46,7 @@ class MinMaxAgent(BaseAgent):
 
         best = -1e5 if player_id == 1 else 10 * board.nrow * board.ncol
         for i, (sta, dic) in enumerate(next_states):
-            s_score = self.minmax(sta, -1*player_id, dic, depth-1)
+            s_score = self.minmax(sta, -1 * player_id, dic, depth - 1)
             best = max(best, s_score) if player_id == 1 else min(best, s_score)
 
         return best
@@ -72,12 +72,11 @@ class MinMaxAgent(BaseAgent):
             temp_id_to_scores[str(self.player_id)] += temp_score
             next_states.append((va, temp_state, temp_id_to_scores))
 
-        best_score = -1e5 if self.player_id == 1 else 10 *\
-            board.nrow * board.ncol
+        best_score = -1e5 if self.player_id == 1 else 10 * board.nrow * board.ncol
         action_dict = {}
 
         for (va, sta, dic) in next_states:
-            score = self.minmax(sta, -1*self.player_id, dic, self.depth)
+            score = self.minmax(sta, -1 * self.player_id, dic, self.depth)
 
             if score not in action_dict:
                 action_dict[score] = [va]
