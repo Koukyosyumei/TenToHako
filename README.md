@@ -1,4 +1,4 @@
-# Dots and Boxes
+# TenToHako
 
 TenToHako is a Python package that allows you to play 'Dots and Boxes,' which is a famous pencil-and-paper game.
 You can easily create the game server and test the basic AI algorithms such as min-max, Monte-Carlo tree search, and Q-learning.
@@ -7,7 +7,7 @@ You can easily create the game server and test the basic AI algorithms such as m
 
     pip install git+https://github.com/Koukyosyumei/TenToHako
 
-## 1. Rule
+## 1. Rule (Dots and Boxes)
 
 <img src="img/sample.gif" width=300>
 
@@ -41,22 +41,32 @@ The client also sends the picked action to the server in JSON as follows.
     {"j": y coordinate of the picked action,
      "i": x coordinate of the picked action}
 
-## 3. Client/Agent
+## 3. Server
 
-TenToHako offers the primary client and agent. The usage of the `Client` class is simple as the following example. If the `Client` instance is created with your agent and port number, the `client` automatically connects to the server, sends the agent's name, and receives the ID. Then, the `play` method allows the client to start the game.
+You can set up the game server with only a few lines.
+
+    server = Server(host_name, host_port, ncol, nrow, score_min=1, score_max=9)
+    server.set_clients()
+    server.play()
+
+The first line initializes the board with specified parameters (dimensions of board, range of scores in each square, etc.) and creates the socket. Then, the `set_clients` methods make the server connect to the clients. Once the server established the connection to the clients, you can start the game with the `play` method.
+
+## 4. Client/Agent
+
+TenToHako offers the primary client and agent in Python. The usage of the `Client` class is simple as the following example. If the `Client` instance is created with your agent and port number, the `client` automatically connects to the server, sends the agent's name, and receives the ID. Then, the `play` method allows the client to start the game.
 
     client = Client(agent, host_port, host_port)
     client.play()
 
 The agent should have the `set_player_id`, `get_valid_action`, and `step` method. The `set_player_id` method sets the agent's id to the instance, and the `get_valid_action` method returns the list of valid actions based on the current state. The `step` method returns the picked action from the current state with the agent's algorithm. If you use Python, you can create your agent with BaseAgent that already implements `set_player_id` and `get_valid_action.`
 
-## 4. Supported Algorithms
+## 5. Supported Algorithms
 
-Carlo tree search with UCB (UCT), and Q-learning. The following picture shows the comparison of each algorithm, and each cell represents the winning rate of the horizontal algorithm against the vertical algorithm. The warmer color means a higher winning rate, and for example, the top-right cell indicates that Q-learning is better than the random agent. Please be careful that this comparison is based on the rough experiment, and we did not comprehensively search all hyper-parameters.
+TenToHako already implemented basic game-AI algorithms such as MIN/MAX, Monte-Carlo tree search with UCB (UCT), and Q-learning. The following picture shows the comparison of each algorithm, and each cell represents the winning rate of the horizontal algorithm against the vertical algorithm. The warmer color means a higher winning rate, and for example, the top-right cell indicates that Q-learning is better than the random agent. Please be careful that this comparison is based on the rough experiment, and we did not comprehensively search all hyper-parameters.
 
 <img src="img/comparison.png" width=400>
 
-## 5. Examples
+## 6. Examples
 
 If you want to experiment with this package quickly, you can use [examples/run.py](examples/run.py). The following command makes random agents fight two times and generate the log file and GIF pictures.
 
