@@ -70,7 +70,7 @@ class QLearningAgent(BaseAgent):
         """
         self._qvalues[string_state][action] = value
 
-    def get_value(self, board):
+    def board_to_max_qvalue(self, board):
         """Compute your agent's estimate of V(s) using current q-values
            V(s) = max_over_action Q(state, action) over possible actions.
 
@@ -108,9 +108,6 @@ class QLearningAgent(BaseAgent):
             t: the current step
             adaptive: use adapted learning rate or not
         """
-
-        # agent parameters
-        gamma = self.discount
         if adaptive:
             learning_rate = self.alpha * self.adaptive_rate(t)
         else:
@@ -118,8 +115,8 @@ class QLearningAgent(BaseAgent):
 
         string_state = str(board.board_matrix)
         q_s_a = (1 - learning_rate) * self.get_qvalue(string_state, action) + \
-            learning_rate * (reward + gamma *
-                             self.get_value(next_board))
+            learning_rate * (reward + self.discount *
+                             self.board_to_max_qvalue(next_board))
 
         self.set_qvalue(string_state, action, q_s_a)
 
@@ -165,11 +162,7 @@ class QLearningAgent(BaseAgent):
         if len(possible_actions) == 0:
             return None
 
-        # agent parameters:
-        epsilon = self.epsilon
-
-        best_or_random = np.random.binomial(n=1, p=epsilon)
-
+        best_or_random = np.random.binomial(n=1, p=self.epsilon)
         if best_or_random == 0:
             chosen_action = self.get_best_action(board)
         else:
