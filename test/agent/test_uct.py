@@ -3,14 +3,16 @@ def test_uctagent():
     from tentohako.agent import UCTAgent
     from tentohako.game import Board
 
-    board_matrix = [['*', '-', '*', '-', '*'],
-                    ['|',  8,  '|',  2,  '|'],
-                    ['*', ' ', '*', ' ', '*'],
-                    [' ',  5,  '|',  3,  '|'],
-                    ['*', '-', '*', '-', '*']]
+    board_matrix = [
+        ["*", "-", "*", "-", "*"],
+        ["|", 8, "|", 2, "|"],
+        ["*", " ", "*", " ", "*"],
+        [" ", 5, "|", 3, "|"],
+        ["*", "-", "*", "-", "*"],
+    ]
     name = "uct"
     player_id = 1
-    id_to_scores = {'1': 0, '-1': 0}
+    id_to_scores = {"1": 0, "-1": 0}
 
     board = Board([], 2, 2)
     board.initialize()

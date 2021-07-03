@@ -7,14 +7,16 @@ def test_qlearningagent():
     from tentohako.agent import QLearningAgent
     from tentohako.game import Board
 
-    board_matrix = [['*', '-', '*', '-', '*'],
-                    ['|',  8,  '|',  2,  '|'],
-                    ['*', ' ', '*', ' ', '*'],
-                    [' ',  5,  '|',  3,  '|'],
-                    ['*', '-', '*', '-', '*']]
+    board_matrix = [
+        ["*", "-", "*", "-", "*"],
+        ["|", 8, "|", 2, "|"],
+        ["*", " ", "*", " ", "*"],
+        [" ", 5, "|", 3, "|"],
+        ["*", "-", "*", "-", "*"],
+    ]
     name = "q-learning"
     player_id = 1
-    id_to_scores = {'1': 0, '-1': 0}
+    id_to_scores = {"1": 0, "-1": 0}
 
     board = Board([], 2, 2)
     board.initialize()
@@ -23,7 +25,8 @@ def test_qlearningagent():
     qlearningagent = QLearningAgent(name)
     qlearningagent.set_player_id(player_id)
     qlearningagent.load(
-        "saved_models/qlearning_ncol_2_nrow_2_scoremin_1_scoremax_9_iterations_10000.pickle")
+        "saved_models/qlearning_ncol_2_nrow_2_scoremin_1_scoremax_9_iterations_10000.pickle"
+    )
     valid_actions = qlearningagent.get_valid_action(board)
     picked_action = qlearningagent.step(board, id_to_scores)
 
@@ -50,8 +53,7 @@ def test_qlearningagent_learn():
     turns = 0
 
     for i in range(iterations):
-        board = Board([], ncol, nrow, score_min=score_min,
-                      score_max=score_max)
+        board = Board([], ncol, nrow, score_min=score_min, score_max=score_max)
         board.initialize()
         id_to_scores = {"1": 0, "-1": 0}
 
@@ -76,22 +78,28 @@ def test_qlearningagent_learn():
 
             reward = 0
             if next_board.is_done():
-                if id_to_scores[str(qlearnagent.player_id)] >\
-                        id_to_scores[str(-qlearnagent.player_id)]:
+                if (
+                    id_to_scores[str(qlearnagent.player_id)]
+                    > id_to_scores[str(-qlearnagent.player_id)]
+                ):
                     reward = 1
-                elif id_to_scores[str(qlearnagent.player_id)] ==\
-                        id_to_scores[str(-qlearnagent.player_id)]:
+                elif (
+                    id_to_scores[str(qlearnagent.player_id)]
+                    == id_to_scores[str(-qlearnagent.player_id)]
+                ):
                     reward = 0
                 else:
                     reward = -1
             else:
-                reward = (id_to_scores[str(qlearnagent.player_id)] -
-                          id_to_scores[str(-qlearnagent.player_id)])/8
+                reward = (
+                    id_to_scores[str(qlearnagent.player_id)]
+                    - id_to_scores[str(-qlearnagent.player_id)]
+                ) / 8
 
             if active_player in player_to_learn:
-                id_to_agent[active_player].update(board, picked_act, reward,
-                                                  next_board, t,
-                                                  adaptive=False)
+                id_to_agent[active_player].update(
+                    board, picked_act, reward, next_board, t, adaptive=False
+                )
 
             active_player *= -1
             board = next_board

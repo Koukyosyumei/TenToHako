@@ -8,13 +8,18 @@ import numpy as np
 from .base import BaseAgent
 
 DEFAULT_QVALUE = 0
-def _return_default_q_value(): return DEFAULT_QVALUE
-def _return_default_dict(): return defaultdict(_return_default_q_value)
+
+
+def _return_default_q_value():
+    return DEFAULT_QVALUE
+
+
+def _return_default_dict():
+    return defaultdict(_return_default_q_value)
 
 
 class QLearningAgent(BaseAgent):
-    def __init__(self, name="q-learning", epsilon=0.2,
-                 alpha=0.4, discount=0.9):
+    def __init__(self, name="q-learning", epsilon=0.2, alpha=0.4, discount=0.9):
         """An agents which uses Q-learning for search
 
         Args:
@@ -46,7 +51,7 @@ class QLearningAgent(BaseAgent):
         Returns:
             1.1 - max([0.1, min(1, math.log((t)/25))])
         """
-        return 1.1 - max([0.1, min(1, math.log((t)/25))])
+        return 1.1 - max([0.1, min(1, math.log((t) / 25))])
 
     def state_action_to_qvalue(self, string_state, action):
         """Returns Q(state, action)
@@ -90,8 +95,12 @@ class QLearningAgent(BaseAgent):
             return 0.0
 
         string_state = str(board.board_matrix)
-        q_values = np.array([self.state_action_to_qvalue(string_state, action)
-                             for action in possible_actions])
+        q_values = np.array(
+            [
+                self.state_action_to_qvalue(string_state, action)
+                for action in possible_actions
+            ]
+        )
         value = np.max(q_values)
 
         return value
@@ -114,10 +123,11 @@ class QLearningAgent(BaseAgent):
             learning_rate = self.alpha
 
         string_state = str(board.board_matrix)
-        q_s_a = (1 - learning_rate) *\
-            self.state_action_to_qvalue(string_state, action) + \
-            learning_rate * (reward + self.discount *
-                             self.board_to_max_qvalue(next_board))
+        q_s_a = (1 - learning_rate) * self.state_action_to_qvalue(
+            string_state, action
+        ) + learning_rate * (
+            reward + self.discount * self.board_to_max_qvalue(next_board)
+        )
 
         self.set_qvalue(string_state, action, q_s_a)
 
@@ -137,8 +147,12 @@ class QLearningAgent(BaseAgent):
             return None
 
         string_state = str(board.board_matrix)
-        q_values = np.array([self.state_action_to_qvalue(string_state, action)
-                             for action in possible_actions])
+        q_values = np.array(
+            [
+                self.state_action_to_qvalue(string_state, action)
+                for action in possible_actions
+            ]
+        )
         best_index = np.argmax(q_values)
         best_action = possible_actions[best_index]
 
@@ -172,8 +186,7 @@ class QLearningAgent(BaseAgent):
         return picked_action
 
     def eval(self):
-        """Set the epsilon to zero
-        """
+        """Set the epsilon to zero"""
         self.epsilon = 0
 
     def step(self, board, id_to_scores):
@@ -198,7 +211,7 @@ class QLearningAgent(BaseAgent):
         Args:
             path: output path
         """
-        with open(path, mode='wb') as f:
+        with open(path, mode="wb") as f:
             pickle.dump(self._Qsa, f)
 
     def load(self, path):
@@ -207,5 +220,5 @@ class QLearningAgent(BaseAgent):
         Args:
             path: path to pickle
         """
-        with open(path, mode='rb') as f:
+        with open(path, mode="rb") as f:
             self._Qsa = pickle.load(f)

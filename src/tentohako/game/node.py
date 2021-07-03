@@ -1,5 +1,3 @@
-
-
 def get_valid_action_with_basic_rule(board):
     """Return a list of possible actions based on the given board.
 
@@ -66,15 +64,14 @@ class Node:
             node: the child node
         """
         node = Node(
-            self, board, self.unexamined[index],
-            self.action_player*-1, id_to_scores)
+            self, board, self.unexamined[index], self.action_player * -1, id_to_scores
+        )
         del self.unexamined[index]
         self.children.append(node)
         return node
 
     def selectChild(self):
-        """Select the child node for searching
-        """
+        """Select the child node for searching"""
         pass
 
     def update(self, result, player_id):
@@ -95,7 +92,7 @@ class Node:
         """
         mostVisited = self.children[0]
         for i, child in enumerate(self.children):
-            if (child.visits > mostVisited.visits):
+            if child.visits > mostVisited.visits:
                 mostVisited = child
 
         return mostVisited
