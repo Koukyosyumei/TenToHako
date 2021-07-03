@@ -11,6 +11,11 @@ class BaseAgent:
         self.name = name
 
     def set_player_id(self, player_id):
+        """Set player's ID
+
+        Args:
+            player_id: player's ID received from the server.
+        """
         self.player_id = player_id
 
     def step(self, board, id_to_scores):

@@ -10,10 +10,38 @@ from .base import BaseAgent
 class UCTNode(Node):
     def __init__(self, parentNode, board, action, activePlayer,
                  id_to_scores, cpuct=0.3):
+        """Node class for UCT
+
+        Args:
+            parentNode: previous node of this node
+            board: board at this node
+            action: action at this node
+            activePlayer: active player's ID at thie node
+            id_to_scores: dictionary (player ID to his score)
+            cpuct: weight
+
+        Attributes:
+            parentNode: previous node of this node
+            board: board at this node
+            action: action at this node
+            activePlayer: active player's ID at thie node
+            id_to_scores: dictionary (player ID to his score)
+            cpuct: weight
+        """
         super().__init__(parentNode, board, action, activePlayer, id_to_scores)
         self.cpuct = cpuct
 
     def addChild(self, board, index, id_to_scores):
+        """Add a child of this node
+
+        Args:
+            board: board of the child status
+            index: index of the action to the child status
+            id_to_scores: score status of the child status
+
+        Returns:
+            node: the child node
+        """
         node = UCTNode(
             self, board, self.unexamined[index],
             self.activePlayer*-1, id_to_scores, cpuct=self.cpuct)
@@ -22,6 +50,11 @@ class UCTNode(Node):
         return node
 
     def selectChild(self):
+        """Select the child node with the highest UCB value
+
+        Returns:
+            selected: selected node
+        """
         selected = None
         bestValue = -1e5
         for child in self.children:

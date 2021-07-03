@@ -38,6 +38,8 @@ class Client:
         self._receive_uid()
 
     def _send_name(self):
+        """Send the user name to the server
+        """
         msg_name = json.dumps(self.agent.name).encode()
         self.sock.send(msg_name)
 

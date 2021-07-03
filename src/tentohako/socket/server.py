@@ -140,7 +140,14 @@ class Server:
             print("-------------------------------------")
 
     def save_plot(self, path):
+        """Save the GIF of the game to the give path
+
+        Args:
+            path: path to the output GIF
+        """
         self.viewer.save(path)
 
     def close(self):
+        """Close the socket
+        """
         self.sock.close()

@@ -28,14 +28,14 @@ class QLearningAgent(BaseAgent):
             epsilon: how gree this agent is
             alpha: learning rete
             discount: discount rate for future rewards
-            _qvalues: dictionary which stores Q[(s, a)]
+            _Qsa: dictionary which stores Q[(s, a)]
         """
         super().__init__(name)
         self.epsilon = epsilon
         self.alpha = alpha
         self.discount = discount
 
-        self._qvalues = defaultdict(_return_default_dict)
+        self._Qsa = defaultdict(_return_default_dict)
 
     def adaptive_rate(self, t):
         """Culculate adaptive rate based on the current step
@@ -48,7 +48,7 @@ class QLearningAgent(BaseAgent):
         """
         return 1.1 - max([0.1, min(1, math.log((t)/25))])
 
-    def get_qvalue(self, string_state, action):
+    def state_action_to_qvalue(self, string_state, action):
         """Returns Q(state, action)
 
         Args:
@@ -56,9 +56,9 @@ class QLearningAgent(BaseAgent):
             action: picked actino
 
         Returns:
-            self._qvalues[string_state][action]: Q(state, action)
+            self._Qsa[string_state][action]: Q(state, action)
         """
-        return self._qvalues[string_state][action]
+        return self._Qsa[string_state][action]
 
     def set_qvalue(self, string_state, action, value):
         """Sets the Qvalue for [state, action] to the given value
@@ -68,7 +68,7 @@ class QLearningAgent(BaseAgent):
             action: picked actino
             value: QValue for (state, action)
         """
-        self._qvalues[string_state][action] = value
+        self._Qsa[string_state][action] = value
 
     def board_to_max_qvalue(self, board):
         """Compute your agent's estimate of V(s) using current q-values
@@ -90,7 +90,7 @@ class QLearningAgent(BaseAgent):
             return 0.0
 
         string_state = str(board.board_matrix)
-        q_values = np.array([self.get_qvalue(string_state, action)
+        q_values = np.array([self.state_action_to_qvalue(string_state, action)
                              for action in possible_actions])
         value = np.max(q_values)
 
@@ -114,13 +114,14 @@ class QLearningAgent(BaseAgent):
             learning_rate = self.alpha
 
         string_state = str(board.board_matrix)
-        q_s_a = (1 - learning_rate) * self.get_qvalue(string_state, action) + \
+        q_s_a = (1 - learning_rate) *\
+            self.state_action_to_qvalue(string_state, action) + \
             learning_rate * (reward + self.discount *
                              self.board_to_max_qvalue(next_board))
 
         self.set_qvalue(string_state, action, q_s_a)
 
-    def get_best_action(self, board):
+    def pick_best_action(self, board):
         """Compute the best action to take in a state(using current q-values).
 
         Args:
@@ -136,14 +137,14 @@ class QLearningAgent(BaseAgent):
             return None
 
         string_state = str(board.board_matrix)
-        q_values = np.array([self.get_qvalue(string_state, action)
+        q_values = np.array([self.state_action_to_qvalue(string_state, action)
                              for action in possible_actions])
         best_index = np.argmax(q_values)
         best_action = possible_actions[best_index]
 
         return best_action
 
-    def get_action(self, board):
+    def pick_action(self, board):
         """Compute the action to take in the current state, including exploration.
            With probability self.epsilon, we should take a random action.
            otherwise - the best policy action (self.getPolicy).
@@ -152,7 +153,7 @@ class QLearningAgent(BaseAgent):
             board: the current state
 
         Returns:
-            chosen_action: chosen action
+            picked_action: chosen action
         """
 
         # Pick Action
@@ -164,11 +165,11 @@ class QLearningAgent(BaseAgent):
 
         best_or_random = np.random.binomial(n=1, p=self.epsilon)
         if best_or_random == 0:
-            chosen_action = self.get_best_action(board)
+            picked_action = self.pick_best_action(board)
         else:
-            chosen_action = random.choice(possible_actions)
+            picked_action = random.choice(possible_actions)
 
-        return chosen_action
+        return picked_action
 
     def eval(self):
         """Set the epsilon to zero
@@ -188,7 +189,7 @@ class QLearningAgent(BaseAgent):
             picked_action:
         """
 
-        picked_action = self.get_action(board)
+        picked_action = self.pick_action(board)
         return picked_action
 
     def save(self, path):
@@ -198,7 +199,7 @@ class QLearningAgent(BaseAgent):
             path: output path
         """
         with open(path, mode='wb') as f:
-            pickle.dump(self._qvalues, f)
+            pickle.dump(self._Qsa, f)
 
     def load(self, path):
         """Load pickle which represets the Q[(s a)]
@@ -207,4 +208,4 @@ class QLearningAgent(BaseAgent):
             path: path to pickle
         """
         with open(path, mode='rb') as f:
-            self._qvalues = pickle.load(f)
+            self._Qsa = pickle.load(f)
