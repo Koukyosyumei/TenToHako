@@ -62,9 +62,11 @@ The agent should have the `set_player_id`, `get_valid_action`, and `step` method
 
 ## 5. Supported Algorithms
 
-TenToHako already implemented basic game-AI algorithms such as MIN/MAX, Monte-Carlo tree search with UCB (UCT), and Q-learning. The following picture shows the comparison of each algorithm, and each cell represents the winning rate of the horizontal algorithm against the vertical algorithm. The warmer color means a higher winning rate, and for example, the top-right cell indicates that Q-learning is better than the random agent. Please be careful that this comparison is based on the rough experiment, and we did not comprehensively search all hyper-parameters.
+TenToHako already implemented basic game-AI algorithms such as MIN/MAX, Monte-Carlo tree search with UCB (UCT), and Q-learning. The following picture shows the comparison of each algorithm, and each cell represents the winning rate of the horizontal algorithm against the vertical algorithm. The warmer color means a higher winning rate, and for example, the top-right cell indicates that Q-learning is better than the random agent. Please be careful that this comparison is based on the rough experiment, and we did not comprehensively search all hyper-parameters. You can quickly train Q-Learning agents with [examples/train_qlearning.py](examples/train_qlearning.py).
 
 <img src="img/comparison.png" width=400>
+
+
 
 ## 6. Examples
 
