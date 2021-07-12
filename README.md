@@ -80,8 +80,8 @@ The optional arguments of [examples/run.py](examples/run.py):
     -n N        number of games
     -c C        number of rows
     -r R        number of columns
-    --a1 A1     agent type r: random, m: minmax, u: uct, q: q-learning
-    --a2 A2     agent type r: random, m: minmax, u: uct, q: q-learning
+    --a1 A1     agent type r: random, m: minmax, u: uct, q: q-learning, a: alphabeta
+    --a2 A2     agent type r: random, m: minmax, u: uct, q: q-learning, a: alphabeta
     -v V        plot (1) or not (0)
     --lp LP     path to the log file
     --gp GP     name of the gif file, this program will generate the gif file like <gp>_<number_of_game>.gif
