@@ -72,7 +72,7 @@ TenToHako already implemented basic game-AI algorithms such as MIN/MAX, Monte-Ca
 
 If you want to experiment with this package quickly, you can use [examples/run.py](examples/run.py). The following command makes random agents fight two times and generate the log file and GIF pictures.
 
-    python experiments/run.py -n 2 --a1 r --a2 r
+    python run.py -n 2 --a1 r --a2 r
 
 The optional arguments of [examples/run.py](examples/run.py):
 

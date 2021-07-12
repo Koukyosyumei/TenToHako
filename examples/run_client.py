@@ -1,6 +1,12 @@
 import argparse
 
-from tentohako.agent import MinMaxAgent, QLearningAgent, RandomAgent, UCTAgent
+from tentohako.agent import (
+    AlphaBetaAgent,
+    MinMaxAgent,
+    QLearningAgent,
+    RandomAgent,
+    UCTAgent,
+)
 from tentohako.socket import Client
 
 
@@ -25,7 +31,9 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    if args.a == "r":
+    if args.a == "a":
+        agent = AlphaBetaAgent()
+    elif args.a == "r":
         agent = RandomAgent()
     elif args.a == "m":
         agent = MinMaxAgent()
