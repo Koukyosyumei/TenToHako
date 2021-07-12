@@ -83,7 +83,7 @@ class UCTAgent(BaseAgent):
         Args:
             name: the name of the agent
             maxiterations: the maximum number of iterations for searcing
-            blocksize: block size for searcing
+            blocksize: batch size for searcing
             timelimit: time-limit (s)
             cpuct: weight (parameter of UCT)
 
@@ -112,6 +112,7 @@ class UCTAgent(BaseAgent):
         Returns:
             picked_action: picked action
         """
+        # root node
         root = UCTNode(
             None, board, None, self.player_id, id_to_scores, cpuct=self.cpuct
         )
@@ -121,6 +122,7 @@ class UCTAgent(BaseAgent):
 
         for i in range(self.maxiterations):
             i += self.blocksize
+            # time-out
             if time.time() - start_time > self.timelimit:
                 break
 
@@ -158,12 +160,15 @@ class UCTAgent(BaseAgent):
                     nodesVisited += 1
                     actions = self.get_valid_action(variantBoard)
 
+                # evaluation of a match
                 if variantScore["1"] > variantScore["-1"]:
                     result = {1: 1, -1: 0}
                 elif variantScore["1"] < variantScore["-1"]:
                     result = {1: 0, -1: 1}
                 else:
                     result = {1: 0.5, -1: 0.5}
+
+                # update all parents
                 while node is not None:
                     node.update(result, self.player_id)
                     node = node.parentNode
