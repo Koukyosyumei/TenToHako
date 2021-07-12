@@ -27,14 +27,14 @@ if __name__ == "__main__":
     parser.add_argument(
         "--a1",
         help="agent type r: random, m: minmax,\
-                        u: uct, q: q-learning",
+                        u: uct, q: q-learning, a: alpha-beta",
         type=str,
         default="r",
     )
     parser.add_argument(
         "--a2",
         help="agent type r: random, m: minmax,\
-                        u: uct, q: q-learning",
+                        u: uct, q: q-learning, a: alpha-beta",
         type=str,
         default="r",
     )
