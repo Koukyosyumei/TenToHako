@@ -33,9 +33,11 @@ class MinMaxAgent(BaseAgent):
         Returns:
             best: score of the given board
         """
+        # return the evaluation score of this node
         if depth == 0 or board.is_done():
             return id_to_scores["1"] - id_to_scores["-1"]
 
+        # expand the current node
         next_states = []
         valid_actions = self.get_valid_action(board)
         for va in valid_actions:
@@ -44,6 +46,7 @@ class MinMaxAgent(BaseAgent):
             temp_id_to_scores[str(player_id)] += temp_score
             next_states.append((temp_state, temp_id_to_scores))
 
+        # recursively apply min/max search
         best = -1e5 if player_id == 1 else 10 * board.nrow * board.ncol
         for i, (sta, dic) in enumerate(next_states):
             s_score = self.minmax(sta, -1 * player_id, dic, depth - 1)
@@ -63,7 +66,7 @@ class MinMaxAgent(BaseAgent):
         Returns:
             picked_action:
         """
-
+        # expand the current node and get childrens
         next_states = []
         valid_actions = self.get_valid_action(board)
         for va in valid_actions:
@@ -72,9 +75,9 @@ class MinMaxAgent(BaseAgent):
             temp_id_to_scores[str(self.player_id)] += temp_score
             next_states.append((va, temp_state, temp_id_to_scores))
 
+        # cululate the evaluation score of children nodes with MIN/MAX
         best_score = -1e5 if self.player_id == 1 else 10 * board.nrow * board.ncol
         action_dict = {}
-
         for (va, sta, dic) in next_states:
             score = self.minmax(sta, -1 * self.player_id, dic, self.depth)
 
@@ -88,6 +91,7 @@ class MinMaxAgent(BaseAgent):
             if self.player_id == -1 and score < best_score:
                 best_score = score
 
+        # randomly select an action from the best actions
         picked_action = random.choice(action_dict[best_score])
 
         return picked_action
@@ -125,9 +129,11 @@ class AlphaBetaAgent(MinMaxAgent):
                                         elif player_id == self.player_id then return alpha
                                         else player_id != self.player_id then return beta
         """
+        # return the evaluation score of this node
         if depth == 0 or board.is_done():
             return id_to_scores["1"] - id_to_scores["-1"]
 
+        # expand the current node
         next_states = []
         valid_actions = self.get_valid_action(board)
         for va in valid_actions:

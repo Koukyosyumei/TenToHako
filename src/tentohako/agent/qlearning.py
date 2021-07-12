@@ -88,12 +88,14 @@ class QLearningAgent(BaseAgent):
         Note:
             please take into account that q-values can be negative.
         """
+        # get possible actions
         possible_actions = self.get_valid_action(board)
 
         # If there are no legal actions, return 0.0
         if len(possible_actions) == 0:
             return 0.0
 
+        # return highest Q-value
         string_state = str(board.board_matrix)
         q_values = np.array(
             [
@@ -117,11 +119,13 @@ class QLearningAgent(BaseAgent):
             t: the current step
             adaptive: use adapted learning rate or not
         """
+        # adjust the learning rate
         if adaptive:
             learning_rate = self.alpha * self.adaptive_rate(t)
         else:
             learning_rate = self.alpha
 
+        # Q(s, a) := (1 - learning_rate) * Q(s, a) + learning_rate * (r + gamma * V(s'))
         string_state = str(board.board_matrix)
         q_s_a = (1 - learning_rate) * self.state_action_to_qvalue(
             string_state, action
@@ -140,12 +144,14 @@ class QLearningAgent(BaseAgent):
         Returns:
             best_action: the best action
         """
+        # get possible actions
         possible_actions = self.get_valid_action(board)
 
         # If there are no legal actions, return None
         if len(possible_actions) == 0:
             return None
 
+        # return the action with highest Q-value
         string_state = str(board.board_matrix)
         q_values = np.array(
             [
@@ -169,14 +175,14 @@ class QLearningAgent(BaseAgent):
         Returns:
             picked_action: chosen action
         """
-
-        # Pick Action
+        # get possible actions
         possible_actions = self.get_valid_action(board)
 
         # If there are no legal actions, return None
         if len(possible_actions) == 0:
             return None
 
+        # e-greedy
         best_or_random = np.random.binomial(n=1, p=self.epsilon)
         if best_or_random == 0:
             picked_action = self.pick_best_action(board)
