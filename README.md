@@ -62,7 +62,7 @@ The agent should have the `set_player_id`, `get_valid_action`, and `step` method
 
 ## 5. Supported Algorithms
 
-TenToHako already implemented basic game-AI algorithms such as MIN/MAX, Monte-Carlo tree search with UCB (UCT), and Q-learning. The following picture shows the comparison of each algorithm, and each cell represents the winning rate of the horizontal algorithm against the vertical algorithm. The warmer color means a higher winning rate, and for example, the top-right cell indicates that Q-learning is better than the random agent. Please be careful that this comparison is based on the rough experiment, and we did not comprehensively search all hyper-parameters. You can quickly train Q-Learning agents with [examples/train_qlearning.py](examples/train_qlearning.py).
+TenToHako already implemented basic game-AI algorithms such as MIN/MAX, Alpha-Beta, Monte-Carlo tree search with UCB (UCT), and Q-learning. The following picture shows the comparison of each algorithm, and each cell represents the winning rate of the horizontal algorithm against the vertical algorithm. The warmer color means a higher winning rate, and for example, the top-right cell indicates that Q-learning is better than the random agent. Please be careful that this comparison is based on the rough experiment, and we did not comprehensively search all hyper-parameters. You can quickly train Q-Learning agents with [examples/train_qlearning.py](examples/train_qlearning.py).
 
 <img src="img/comparison.png" width=400>
 
@@ -80,8 +80,8 @@ The optional arguments of [examples/run.py](examples/run.py):
     -n N        number of games
     -c C        number of rows
     -r R        number of columns
-    --a1 A1     agent type r: random, m: minmax, u: uct, q: q-learning, a: alphabeta
-    --a2 A2     agent type r: random, m: minmax, u: uct, q: q-learning, a: alphabeta
+    --a1 A1     agent type r: random, m: minmax, u: uct, q: q-learning, a: alpha-beta
+    --a2 A2     agent type r: random, m: minmax, u: uct, q: q-learning, a: alpha-beta
     -v V        plot (1) or not (0)
     --lp LP     path to the log file
     --gp GP     name of the gif file, this program will generate the gif file like <gp>_<number_of_game>.gif
